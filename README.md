@@ -1,7 +1,7 @@
 # OMDF-YOWOv3: Orthogonal Motion-Guided Decoupled Fusion for Fine-Grained Spatio-Temporal Action Detection in Sports Videos
-
-> \\\*\\\*Paper status:\\\*\\\* under submission / under review.  
-> \\\*\\\*Code status:\\\*\\\* core model components are provided; more checkpoints, scripts, and dataset tools will be updated progressively.
+Journal of Submission: The Visual Computer
+Paper status:under submission / under review.  
+Code status:core model components are provided; more checkpoints, scripts, and dataset tools will be updated progressively.
 
 ## Introduction
 
