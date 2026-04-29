@@ -1,4 +1,3 @@
-# model/fusion/build_fusion.py
 from .CFAM import CFAMFusion
 from .SE import SEFusion
 from .Simple import SimpleFusion
@@ -9,7 +8,7 @@ from .CBAM import CBAMFusion
 from .LKA import LKAFusion
 from .docf import DOCFFusion
 
-# major of Attention are adopted from https://viblo.asia/p/mot-chut-ve-co-che-attention-trong-computer-vision-x7Z4D622LnX
+
 def build_fusion_block(out_channels_2D,
                        out_channels_3D,
                        inter_channels_fusion,
