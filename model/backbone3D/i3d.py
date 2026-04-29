@@ -1,4 +1,3 @@
-# model/backbone3D/i3d.py
 import math
 import os
 import sys
@@ -11,9 +10,6 @@ import torch.nn.functional as F
 from torch.autograd import Variable
 
 
-# =========================
-# Same-padding 3D MaxPool
-# =========================
 class MaxPool3dSamePadding(nn.MaxPool3d):
 
     def compute_pad(self, dim, s):
@@ -40,9 +36,6 @@ class MaxPool3dSamePadding(nn.MaxPool3d):
         return super(MaxPool3dSamePadding, self).forward(x)
 
 
-# =========================
-# 3D Conv Unit (same pad)
-# =========================
 class Unit3D(nn.Module):
 
     def __init__(self, in_channels,
@@ -105,10 +98,6 @@ class Unit3D(nn.Module):
             x = self._activation_fn(x)
         return x
 
-
-# =========================
-# Inception Block
-# =========================
 class InceptionModule(nn.Module):
     def __init__(self, in_channels, out_channels, name):
         super(InceptionModule, self).__init__()
@@ -354,7 +343,7 @@ class InceptionI3d(nn.Module):
         if self.ltcc_attention_enabled:
             self.ltcc_temporal_attention = LTCCTemporalAttentionCompression(out_c)
 
-        # ★ 末端“温和白化”层：压强度，稳注入
+        # 末端“温和白化”层：压强度，稳注入
         self.post_conv = nn.Conv3d(out_c, out_c, kernel_size=1, bias=False)
         self.post_bn = nn.BatchNorm3d(out_c, eps=1e-3, momentum=1e-2)
         with torch.no_grad():
