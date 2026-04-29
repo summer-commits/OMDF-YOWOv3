@@ -98,7 +98,7 @@ class YOWOv3(torch.nn.Module):
             last2dimension2 = last2dimension
             out_channels_2D = [[c, c] for c in out_channels_2D]
 
-        # 融合模块（把 config 传进去，让 BiFPN 可读 YAML 开关）
+
         self.fusion = build_fusion_block(
             out_channels_2D,
             out_channels_3D,
