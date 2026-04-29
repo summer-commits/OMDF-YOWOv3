@@ -1,10 +1,9 @@
-# model/fusion/docf.py
 import math
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
-# 兼容你工程不同位置的 CARAFE 定义
+
 try:
     from ..modules.ops.carafe import CARAFE
 except Exception:
@@ -394,9 +393,6 @@ class DOCFLayer(nn.Module):
         return [[dn_b3, dn_c3], [dn_b4, dn_c4], [dn_b5, dn_c5]]
 
 
-# -----------------------------
-# 外层 DOCFFusion（与 build_fusion.py 匹配）
-# -----------------------------
 class DOCFFusion(nn.Module):
     """
     - channels_2D: [[Cbox3,Ccls3],[Cbox4,Ccls4],[Cbox5,Ccls5]]
@@ -463,7 +459,7 @@ class DOCFFusion(nn.Module):
         if not (isinstance(alpha_cls, (list, tuple)) and len(alpha_cls) == 3):
             alpha_cls = [0.0, 1.25, 1.25]
 
-        # 堆叠 DOCF 层
+        # DOCF 层
         self.layers = nn.ModuleList([
             DOCFLayer(
                 interchannels, channels_3D,
