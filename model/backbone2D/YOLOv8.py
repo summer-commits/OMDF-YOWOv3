@@ -1,4 +1,3 @@
-# YOLOv8.py  - 可直接替换的增强版（STPE + sparse temporal compensation + content-adaptive reassembly）
 import math
 import torch
 import torch.nn as nn
@@ -52,9 +51,6 @@ class Conv(nn.Module):
         return self.relu(self.conv(x))
 
 
-# ------------------------------------------------------------
-# Involution + GRN （稳态替代：仅用于 P4/P5）
-# ------------------------------------------------------------
 class Involution2d(nn.Module):
     """
     Involution (CVPR2021): 位置自适应的卷积核（不扩大感受野、不引入强形变），更稳
@@ -93,10 +89,6 @@ class GRN(nn.Module):
 
 
 class Residual(nn.Module):
-    """
-    残差块：默认 3x3 Conv + 3x3 Conv
-    当 use_invo=True 时，替换中间 3x3 为 Involution，并在块尾加入 GRN 稳定训练
-    """
     def __init__(self, ch, add=True, use_invo=False):
         super().__init__()
         self.add_m = add
@@ -144,9 +136,7 @@ class SPP(nn.Module):
         return self.conv2(torch.cat([x, y1, y2, self.res_m(y2)], 1))
 
 
-# ------------------------------------------------------------
-# CARAFE++ (内容自适应上采样)
-# ------------------------------------------------------------
+
 class CARAFEpp(nn.Module):
     """
     轻量 CARAFE++：content-aware reassembly
@@ -186,10 +176,7 @@ class CARAFEpp(nn.Module):
         out = out.view(b, c, h * s, w * s)
         return out
 
-
-# ------------------------------------------------------------
-# DarkNet Backbone（支持在 P4/P5 打开 Involution）
-# ------------------------------------------------------------
+-
 class DarkNet(nn.Module):
     def __init__(self, width, depth, cfg2d=None):
         super().__init__()
@@ -352,9 +339,7 @@ class STPEBlock(nn.Module):
 
         return out_feats
 
-# ------------------------------------------------------------
-# Temporal Shift（与现有一致，放在残差支路思路）
-# ------------------------------------------------------------
+
 class TemporalShift(nn.Module):
     def __init__(self, n_segment=8, fold_div=16):
         super().__init__()
@@ -395,9 +380,6 @@ class TemporalShift(nn.Module):
         return out
 
 
-# ------------------------------------------------------------
-# PAdapter（可选，带 learnable alpha）
-# ------------------------------------------------------------
 class PAdapter(nn.Module):
     def __init__(self, in_channels=None, bottleneck=32, n_segment=8, alpha_init=0.1):
         super().__init__()
@@ -458,9 +440,7 @@ class PAdapter(nn.Module):
         return out
 
 
-# ------------------------------------------------------------
-# DarkFPN（加 STPE、可选 TSM / PAdapter、可选 CARAFE++ 上采样）
-# ------------------------------------------------------------
+
 class DarkFPN(nn.Module):
     def __init__(self, width, depth, cfg2d=None):
         super().__init__()
